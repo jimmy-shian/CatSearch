@@ -1,0 +1,96 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f9;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0px auto;
+    background-color: #fff;
+    padding: 10px 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #0056b3;
+}
+
+.search-section {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+#searchInput {
+    width: 100%;
+    padding: 12px 40px 12px 15px; /* 右側留出空間給按鈕 */
+    font-size: 1.1em;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.clear-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 24px;
+    color: #999;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.clear-btn:hover { color: #555; }
+
+.search-results {
+    position: absolute;
+    width: 100%;
+    max-height: 250px;
+    overflow-y: auto;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+.search-item {
+    display: flex; align-items: center; padding: 10px 15px;
+    border-bottom: 1px solid #eee; cursor: pointer; transition: background-color 0.2s;
+}
+.search-item:last-child { border-bottom: none; }
+.search-item:hover { background-color: #f0f8ff; }
+.char-rarity { font-size: 0.9em; width: 70px; flex-shrink: 0; font-weight: bold; }
+.char-name { font-size: 1.05em; color: #333; }
+.rarity-稀有 { color: #4CAF50; }
+.rarity-激稀有 { color: #FF9800; }
+
+#resultDisplay {
+    margin-top: 40px;
+    padding: 40px;
+    text-align: center;
+    font-size: 4.5em;
+    font-weight: bold;
+    border-radius: 10px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#resultDisplay.use {
+    color: #28a745;
+    background-color: #e9f5ec;
+    border: 2px solid #28a745;
+}
+
+#resultDisplay.np {
+    color: #dc3545;
+    background-color: #fbe9eb;
+    border: 2px solid #dc3545;
+}
+
+.hidden {
+    display: none !important;
+}
