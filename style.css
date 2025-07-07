@@ -14,13 +14,17 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    pointer-events: none;
-    z-index: 0;
-    background: radial-gradient(circle at 50% 30%, rgba(80,80,80,0.7) 0%, rgba(50,50,50,0.65) 60%, rgba(30,30,30,0.85) 100%);
-    /* 聚光燈灰色半透明 */
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 半透明黑色 */
+    z-index: -1; /* 確保在內容之後，但在背景之上 */
 }
+
+body {
+    position: relative;
+    z-index: 0;
+}
+
 .container, #resultDisplay, h1, input, .clear-btn, .search-results {
     position: relative;
     z-index: 1;
@@ -84,24 +88,203 @@ h1 {
     border-bottom: 1px solid #eee; cursor: pointer; transition: background-color 0.2s;
 }
 .search-item:last-child { border-bottom: none; }
-.search-item:hover { background-color: #f0f8ff; }
+.search-item:hover, .search-item.selected { background-color: #f0f8ff; }
 .char-rarity { font-size: 0.9em; width: 70px; flex-shrink: 0; font-weight: bold; }
 .char-name { font-size: 1.05em; color: #333; }
 .rarity-稀有 { color: #4CAF50; }
 .rarity-激稀有 { color: #FF9800; }
 
 #resultDisplay {
+    position: relative; /* 為了讓偽元素定位 */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
     margin-top: 40px;
     padding: 40px;
     text-align: center;
     font-size: 4.5em;
     font-weight: bold;
     border-radius: 10px;
-    transition: background-color 0.3s, color 0.3s;
+    transition: background-color 0.3s, color 0.3s, background-image 0.3s;
+    z-index: 2;
+}
+
+/* Cat Gallery Styles */
+.cat-gallery {
+    /* display is controlled by JS, set to 'grid' when shown */
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 15px;
+    padding-top: 20px;
+    margin-top: 20px;
+    border-top: 1px solid #ccc;
+}
+
+.cat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background-color: #fdfdfd;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+}
+
+.cat-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.cat-item img {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    margin-bottom: 8px;
+}
+
+.cat-item p {
+    margin: 0;
+    font-size: 12px;
+    color: #333;
+    font-weight: 500;
+    word-break: keep-all; /* Avoid breaking Chinese words */
+}
+
+#resultDisplay::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: inherit; /* 繼承父元素的背景圖 */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.1; /* 設定透明度 */
+    z-index: -1; /* 確保在內容之後 */
+}
+
+#resultDisplay ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+    font-size: 16px; /* 調整字體大小以提高可讀性 */
+    font-weight: normal;
+}
+
+#resultDisplay li {
+    padding: 8px 12px;
+    border-bottom: 1px solid #ddd;
+    line-height: 1.5;
+}
+
+/* 描述列表樣式 */
+#resultDisplay .description-item {
+    padding: 8px 12px;
+    border-bottom: 1px solid #ddd;
+    list-style: none;
+    margin-left: 0;
+    padding-left: 0;
+}
+
+#resultDisplay .description-list {
+    margin: 4px 0 0 0;
+    padding-left: 20px;
+}
+
+#resultDisplay .description-list li {
+    position: relative;
+    padding: 4px 0 4px 16px;
+    border: none;
+    margin: 0;
+    line-height: 1.4;
+}
+
+#resultDisplay .description-list li:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #666;
+    font-weight: bold;
+}
+
+#resultDisplay .description-item > strong {
+    display: block;
+    margin-bottom: 4px;
+    color: #0056b3;
+}
+
+/* 屬性網格樣式 */
+.stats-grid-container {
+    padding: 8px 0 !important;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px 16px;
+    list-style: none;
+    padding: 0 12px !important;
+    margin: 0 !important;
+}
+
+.stats-grid li {
+    display: flex;
+    flex-direction: column;
+    border: none !important;
+    padding: 4px 0 !important;
+    background-color: rgba(255, 255, 255, 0.4);
+    border-radius: 4px;
+    text-align: center;
+}
+
+.stats-grid li strong {
+    font-size: 0.9em;
+    color: #0056b3;
+    margin-right: 0;
+}
+
+.stats-grid li span {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #333;
+}
+
+#resultDisplay li:last-child {
+    border-bottom: none;
+}
+
+/* #resultDisplay li strong {
+    color: #0056b3;
+    margin-right: 10px;
+} */
+
+
+#resultDisplay.use::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-image: var(--cat-bg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    filter: blur(8px);
+    opacity: 0.5;
+    z-index: 1;
+}
+
+#resultDisplay.use > * {
+    position: relative;
+    z-index: 2;
 }
 
 #resultDisplay.use {
-    color: #28a745;
+    color: #0c3916;
     background-color: #e9f5ec;
     border: 2px solid #28a745;
 }
